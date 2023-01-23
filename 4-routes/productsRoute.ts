@@ -46,11 +46,12 @@ ProductsRoute.get('/products/single/:id', async (req, res) => {
     }
 })
 
-ProductsRoute.delete('/products/delete/:id', async (req, res) => {
+ProductsRoute.post('/products/delete/:id', async (req, res) => {
     const id = req.params.id;
-    console.log(id);
+    const body = req.body
+    console.log(body);
     try {
-        const response = await deleteProductById(+id);
+        const response = await deleteProductById(body, +id);
         res.status(200).json(response)
     } catch (e) {
         res.status(400).json(e)

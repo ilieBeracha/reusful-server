@@ -41,3 +41,10 @@ UserRoute.post('/users/login', async (req, res) => {
         res.status(400).json('something went wrong...')
     }
 })
+
+// UserRoute.post('/users/addimage',async (req:any,res:any)=>{
+//     const body = req.body;
+//     const file = req.files
+//     console.log(file);
+    
+// })

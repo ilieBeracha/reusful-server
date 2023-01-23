@@ -1,14 +1,12 @@
 import { OkPacket } from "mysql2";
 import { execute } from "../1-dal/dal";
 import { ProductInterface } from "../models/productModel";
-import { saveImagesToS3 } from "./awsLogic";
+import { deleteImageFromS3, saveImagesToS3 } from "./awsLogic";
 const uniqid = require('uniqid');
 
 export async function getProductsByCategorie(id: number) {
     const query = `SELECT * FROM products WHERE categorieId = ${id}`;
     const [results] = await execute(query);
-    // console.log(results);
-
     return results;
 }
 
@@ -18,8 +16,6 @@ export async function addProduct(product: ProductInterface, file: any) {
     let key = await saveImagesToS3(file, imageId)
     const query = 'INSERT INTO products(userId,productName,productDescription,productPrice,productStatus,productDate,productImage,categorieId) VALUES (?,?,?,?,?,?,?,?)'
     const [results] = await execute<OkPacket>(query, [userId, productName, productDescription, productPrice, productStatus, productDate, key, categorieId]);
-    // console.log(results);
-
     return results;
 }
 
@@ -35,7 +31,9 @@ export async function getProductByUserId(id: number) {
     return results;
 }
 
-export async function deleteProductById(id:number){
+export async function deleteProductById(product: ProductInterface, id: number) {
+    const { productImage } = product
+    await deleteImageFromS3(productImage)
     const query = `DELETE FROM products WHERE id = ${id}`
     const [results] = await execute<OkPacket>(query)
     return results;
