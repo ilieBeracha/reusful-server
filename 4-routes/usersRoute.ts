@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllUsers, register } from '../2-logic/usersLogic';
+import { addImageForUser, getAllUsers, getUserById, register } from '../2-logic/usersLogic';
 import { generateToken } from '../3-middleware/jwt';
 
 export const UserRoute = express.Router();
@@ -12,6 +12,16 @@ UserRoute.get('/users', (req, res) => {
         res.status(400).json(e)
     }
 });
+
+UserRoute.get('/users/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const response = await getUserById(+id);
+        res.status(200).json(response)
+    } catch (e) {
+        res.status(400).json(e)
+    }
+})
 
 
 UserRoute.post('/users/register', async (req, res) => {
@@ -30,7 +40,7 @@ UserRoute.post('/users/login', async (req, res) => {
     const password = req.body.password;
     const users = await getAllUsers();
     try {
-        const user:any = users.find((u) => u.username === username && u.password === password);
+        const user: any = users.find((u) => u.username === username && u.password === password);
         if (user) {
             const token = await generateToken(user)
             res.status(200).json(token);
@@ -42,9 +52,10 @@ UserRoute.post('/users/login', async (req, res) => {
     }
 })
 
-// UserRoute.post('/users/addimage',async (req:any,res:any)=>{
-//     const body = req.body;
-//     const file = req.files
-//     console.log(file);
-    
-// })
+UserRoute.post('/users/addimage/:id', async (req: any, res: any) => {
+    const file = req.files.userImage;
+    const id = req.params.id;
+    // console.log(file);
+
+    await addImageForUser(file, id)
+});

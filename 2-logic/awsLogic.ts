@@ -33,16 +33,17 @@ export async function saveImagesToS3Cat(file: any, imageId: string) {
     }
 }
 export async function saveImagesToS3User(file: any, imageId: string) {
-    console.log(file.categoriesImage.name.split('.')[1]);
+    console.log(file.name.split('.')[1]);
+    console.log(file);
     
     try {
-        const type = file.categoriesImage.name.split('.')[1];
+        const type = file.name.split('.')[1];
         const params = {
-            Body: file.categoriesImage.data,
+            Body: file.data,
             Key: `${imageId}.${type}`,
             Bucket: 'reusfulimages'
         }
-        // console.log('saving image' + imageId);
+        console.log('saving image' + imageId);
         await s3bucket.upload(params).promise()
         return params.Key
     } catch (err: any) {

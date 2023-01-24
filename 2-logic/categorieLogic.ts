@@ -10,10 +10,10 @@ export async function getAllCategories() {
     return results;
 }
 
-// export async function addImageForCategorie(URL: any) {
-//     const imageId = uniqid();
-//     const key = await saveImagesToS3Cat(URL, imageId)
-//     const query = `UPDATE categorie SET categorieImage = '${key}' where id =`
-//     const [results] = await execute(query);
-//     return results;
-// }
+export async function addImageForCategorie(URL: any) {
+    const imageId = uniqid();
+    const key = await saveImagesToS3Cat(URL, imageId)
+    const query = `UPDATE categorie SET categorieImage = '${key}' where id =3`
+    const [results] = await execute(query);
+    return results;
+}

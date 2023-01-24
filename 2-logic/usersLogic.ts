@@ -10,6 +10,12 @@ export async function getAllUsers() {
     return results
 };
 
+export async function getUserById(id:number){
+    const query = `SELECT firstName,lastName,username,email,userImage FROM users WHERE id = ${id}`
+    const [results] = await execute(query);
+    return results;
+}
+
 export async function register(user: UserInterface) {
     const { firstName, lastName, username, email, password } = user;
     const query = `INSERT INTO users(firstName,lastName,username,email,password) VALUES (?,?,?,?,?)`;
@@ -18,10 +24,10 @@ export async function register(user: UserInterface) {
     return results;
 };
 
-// export async function addImageForUser(URL: any, id: number) {
-//     const imageId = uniqid();
-//     const key = await saveImagesToS3User(URL, imageId)
-//     const query = `UPDATE users SET userImage = '${key}' where id =${id}`
-//     const [results] = await execute(query);
-//     return results;
-// }
+export async function addImageForUser(file: any, id: number) {
+    const imageId = 'profileImage' + uniqid();
+    const key = await saveImagesToS3User(file, imageId)
+    const query = `UPDATE users SET userImage = '${key}' where id =${id}`
+    const [results] = await execute(query);
+    return results;
+}

@@ -4,5 +4,6 @@ export interface UserInterface{
     lastName:string,
     username:string,
     email:string,
-    password:string
+    password:string,
+    userImage:string
 }

@@ -30,8 +30,12 @@ ProductsRoute.post('/products/add', async (req: any, res: any) => {
         const body = req.body;
         const file = req.files
         const results = await addProduct(body, file);
+        console.log(body);
+        
         res.status(200).json(results)
     } catch (e) {
+        console.log(e);
+        
         res.status(400).json(e)
     }
 })
