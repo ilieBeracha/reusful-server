@@ -8,5 +8,7 @@ export interface ProductInterface{
     productImage :string,
     categorieId:number,
     userId:number,
-    imageUrl:string
+    imageUrl:string,
+    username?:string,
+    categorieName?:string
 }

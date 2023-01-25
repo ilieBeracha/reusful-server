@@ -10,16 +10,16 @@ export async function getAllUsers() {
     return results
 };
 
-export async function getUserById(id:number){
-    const query = `SELECT firstName,lastName,username,email,userImage FROM users WHERE id = ${id}`
+export async function getUserById(id: number) {
+    const query = `SELECT firstName,lastName,username,country,city,email,userImage FROM users WHERE id = ${id}`
     const [results] = await execute(query);
     return results;
 }
 
 export async function register(user: UserInterface) {
-    const { firstName, lastName, username, email, password } = user;
-    const query = `INSERT INTO users(firstName,lastName,username,email,password) VALUES (?,?,?,?,?)`;
-    const results = await execute<OkPacket>(query, [firstName, lastName, username, email, password]);
+    const { firstName, lastName, username, country, city, email, password } = user;
+    const query = `INSERT INTO users(firstName,lastName,username,country,city,email,password) VALUES (?,?,?,?,?,?,?)`;
+    const results = await execute<OkPacket>(query, [firstName, lastName, username, country, city, email, password]);
     user.id = results[0].insertId;
     return results;
 };

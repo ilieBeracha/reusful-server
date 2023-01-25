@@ -1,5 +1,5 @@
 import express from 'express';
-import { addProduct, deleteProductById, getProductById, getProductByUserId, getProductsByCategorie } from '../2-logic/productsLogic';
+import { addProduct, addproductImages, deleteProductById, getProductById, getProductByUserId, getProductImages, getProductsByCategorie } from '../2-logic/productsLogic';
 
 export const ProductsRoute = express.Router();
 
@@ -30,12 +30,12 @@ ProductsRoute.post('/products/add', async (req: any, res: any) => {
         const body = req.body;
         const file = req.files
         const results = await addProduct(body, file);
-        console.log(body);
-        
+        // console.log(body);
+
         res.status(200).json(results)
     } catch (e) {
-        console.log(e);
-        
+        // console.log(e);
+
         res.status(400).json(e)
     }
 })
@@ -53,11 +53,34 @@ ProductsRoute.get('/products/single/:id', async (req, res) => {
 ProductsRoute.post('/products/delete/:id', async (req, res) => {
     const id = req.params.id;
     const body = req.body
-    console.log(body);
+    // console.log(body);
     try {
         const response = await deleteProductById(body, +id);
         res.status(200).json(response)
     } catch (e) {
         res.status(400).json(e)
+    }
+})
+
+ProductsRoute.post('/products/images/:id', async (req: any, res) => {
+    // console.log(req.files)
+    const files = req.files.productImage;
+    const productId = req.params.id
+    try {
+        const response = await addproductImages(files, +productId)
+        res.status(200).json(response)
+    } catch (e) {
+        res.status(400).json(e)
+    }
+})
+
+ProductsRoute.post('/products/getimages/:id',async (req,res)=>{
+    const id = req.params.id;
+    try{
+        const response = await getProductImages(+id);
+        res.status(200).json(response);
+    }catch(e){
+        res.status(400).json(e);
+
     }
 })

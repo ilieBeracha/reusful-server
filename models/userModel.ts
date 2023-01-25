@@ -5,5 +5,7 @@ export interface UserInterface{
     username:string,
     email:string,
     password:string,
-    userImage:string
+    userImage:string,
+    country:string,
+    city:string
 }
