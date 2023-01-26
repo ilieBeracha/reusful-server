@@ -1,5 +1,5 @@
 import express from 'express';
-import { addProduct, addproductImages, deleteProductById, getProductById, getProductByUserId, getProductImages, getProductsByCategorie } from '../2-logic/productsLogic';
+import { addProduct, addproductImages, deleteProductById, editProduct, getProductById, getProductByUserId, getProductImages, getProductsByCategorie } from '../2-logic/productsLogic';
 
 export const ProductsRoute = express.Router();
 
@@ -74,13 +74,27 @@ ProductsRoute.post('/products/images/:id', async (req: any, res) => {
     }
 })
 
-ProductsRoute.post('/products/getimages/:id',async (req,res)=>{
+ProductsRoute.post('/products/getimages/:id', async (req, res) => {
     const id = req.params.id;
-    try{
+    try {
         const response = await getProductImages(+id);
         res.status(200).json(response);
-    }catch(e){
+    } catch (e) {
         res.status(400).json(e);
 
     }
+})
+
+ProductsRoute.post('/products/edit/:id',async (req, res) => {
+    const body = req.body;
+    const id = req.params.id;
+    console.log(body);
+    console.log(id);
+    try {
+        const response = await editProduct(body, +id)
+        res.status(200).json(response)
+    }catch(e){
+        res.status(400).json(e)
+    }
+    
 })

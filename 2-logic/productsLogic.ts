@@ -76,3 +76,10 @@ export async function getProductImages(id: number) {
     const [results] = await execute(query)
     return results;
 }
+
+export async function editProduct(product: ProductInterface, id: number) {
+    const { productName, productDescription, productPrice, productDate, categorieId } = product
+    const query = `UPDATE products SET productName = '${productName}', productDescription = '${productDescription}', productPrice = '${productPrice}', productDate = '${productDate}', categorieId = '${categorieId}' WHERE id = ${id}`
+    const [results] = await execute<OkPacket>(query);
+    return results;
+}
