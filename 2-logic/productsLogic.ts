@@ -16,7 +16,7 @@ export async function addProduct(product: ProductInterface, file: any) {
     let key = await saveImagesToS3(file, imageId)
     const query = 'INSERT INTO products(userId,productName,productDescription,productPrice,productStatus,productDate,productImage,categorieId) VALUES (?,?,?,?,?,?,?,?)'
     const [results] = await execute<OkPacket>(query, [userId, productName, productDescription, productPrice, productStatus, productDate, key, categorieId]);
-    console.log(results);
+    // console.log(results);
 
     return results;
 }
@@ -28,7 +28,7 @@ export async function getProductById(id: number) {
     JOIN categorie ON products.categorieId = categorie.id 
     WHERE products.id = ${id}`
     const [results] = await execute<OkPacket>(query);
-    console.log(results);
+    // console.log(results);
 
     return results;
 }
@@ -60,8 +60,8 @@ export async function addproductImages(files: any[], productId: any) {
     files.forEach(async file => {
         const imageId = 'secondaryProductImages' + uniqid();
         let key = await saveProductImagesToS3(file, imageId)
-        console.log("key" + key);
-        console.log("productId" + productId);
+        // console.log("key" + key);
+        // console.log("productId" + productId);
 
         const query = 'INSERT INTO productimages(productId,productsImage) VALUES (?,?)'
         const [results] = await execute<OkPacket>(query, [productId, key]);
