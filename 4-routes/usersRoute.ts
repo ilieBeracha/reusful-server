@@ -1,7 +1,7 @@
 import express from 'express';
 import { hashedPassword } from '../1-dal/hashedPassword';
 import { addImageForUser, getAllUsers, getUserById, register } from '../2-logic/usersLogic';
-import { generateToken } from '../3-middleware/jwt';
+import { generateToken } from '../1-dal/jwt';
 import { UserInterface } from '../models/userModel';
 
 export const UserRoute = express.Router();
