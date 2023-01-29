@@ -52,3 +52,9 @@ export async function getMessagesBySenderAndReceiver(sender_id: number, receiver
     const [results] = await execute(query)
     return results;
 }
+
+export async function addTrueToSeenMessages(chatId: number) {
+    const query = `UPDATE messages SET seen = ${1} WHERE chat_id = ${chatId}`
+    const [results] = await execute(query);
+    return results;
+}

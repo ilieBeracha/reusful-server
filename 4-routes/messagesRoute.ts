@@ -1,5 +1,5 @@
 import express from 'express'
-import { getChatByUser, getMessagesBySenderAndReceiver, sendMessage } from '../2-logic/messagesLogic';
+import { addTrueToSeenMessages, getChatByUser, getMessagesBySenderAndReceiver, sendMessage } from '../2-logic/messagesLogic';
 
 export const MessagesRoute = express.Router();
 
@@ -40,5 +40,16 @@ MessagesRoute.get('/messages/sent/:myid/:otheruserid', async (req, res) => {
         res.status(400).json(e)
 
     }
+})
 
+MessagesRoute.post('/messages/seen/:id', async (req, res) => {
+    const chatId = req.params.id
+    console.log(chatId);
+
+    try {
+        const response = await addTrueToSeenMessages(+chatId);
+        res.status(200).json(response)
+    } catch (e) {
+        res.status(400).json(e)
+    }
 })
