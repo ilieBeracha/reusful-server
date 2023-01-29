@@ -1,6 +1,8 @@
 import express from 'express';
+import { hashedPassword } from '../1-dal/hashedPassword';
 import { addImageForUser, getAllUsers, getUserById, register } from '../2-logic/usersLogic';
 import { generateToken } from '../3-middleware/jwt';
+import { UserInterface } from '../models/userModel';
 
 export const UserRoute = express.Router();
 
@@ -25,7 +27,10 @@ UserRoute.get('/users/:id', async (req, res) => {
 
 
 UserRoute.post('/users/register', async (req, res) => {
-    const user = req.body;
+    const user:UserInterface = req.body;
+    user.password = hashedPassword(user.password)
+    console.log(user.password);
+    
     try {
         await register(user);
         const token = await generateToken(user);
@@ -40,7 +45,7 @@ UserRoute.post('/users/login', async (req, res) => {
     const password = req.body.password;
     const users = await getAllUsers();
     try {
-        const user: any = users.find((u) => u.username === username && u.password === password);
+        const user: any = users.find((u) => u.username === username && u.password === hashedPassword(password));
         if (user) {
             const token = await generateToken(user)
             res.status(200).json(token);
